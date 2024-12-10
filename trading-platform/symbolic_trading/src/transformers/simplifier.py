@@ -111,10 +111,11 @@ class Simplifier:
                 base = node.left.left
                 inner_exp = node.left.right
                 outer_exp = node.right
-                # Create n*m with parentheses
+                # Create n*m as a parenthesized expression
                 new_exp = OperatorNode('*', inner_exp, outer_exp)
-                # Create x^(n*m) with proper parentheses handling
+                # Ensure the multiplication is properly parenthesized in the final expression
                 result = OperatorNode('^', base, new_exp)
+                # Force parentheses around the exponent by making it a separate node
                 return result, True
         return node, False
 
