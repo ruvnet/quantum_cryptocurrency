@@ -23,8 +23,17 @@ start_local() {
 # Function to start Docker cluster
 start_docker() {
     echo -e "${BLUE}Starting Docker cluster...${NC}"
-    cd quantum_crypto/completion/deployment/docker
-    docker-compose up -d
+    
+    # Check if .env exists, if not copy sample
+    if [ ! -f "quantum_crypto/config/.env" ]; then
+        echo -e "${YELLOW}Creating .env file from sample...${NC}"
+        cp quantum_crypto/config/sample.env quantum_crypto/config/.env
+    fi
+    
+    # Start Docker services
+    cd /workspaces/quantum_cryptocurrency
+    docker-compose -f quantum_crypto/completion/deployment/docker/docker-compose.yml up -d
+    
     echo -e "${GREEN}Docker cluster started!${NC}"
     echo -e "To view logs, run: ${BLUE}docker-compose logs -f${NC}"
 }
