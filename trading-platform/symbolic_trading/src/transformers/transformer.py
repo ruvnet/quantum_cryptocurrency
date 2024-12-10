@@ -17,6 +17,10 @@ class Transformer:
         self.integrator = None      # Created when needed with specific variable
         self.factorizer = Factorizer()
 
+    def parse_expression(self, expression):
+        """Parse an expression string into an AST."""
+        return self.parser.parse_expression(expression)
+
     def simplify_expression(self, expression):
         """
         Simplify a mathematical expression.

@@ -10,6 +10,7 @@ class Parser:
             '/': {'precedence': 2, 'associativity': 'L'},
             '^': {'precedence': 3, 'associativity': 'R'}
         }
+        self.functions = {'sin', 'cos', 'tan', 'log', 'exp'}
 
     def tokenize(self, expression):
         """
@@ -29,7 +30,7 @@ class Parser:
 
         token_specification = [
             ('NUMBER',   r'\d+(\.\d*)?'),   # Integer or decimal number
-            ('IDENT',    r'[A-Za-z]+'),     # Identifiers
+            ('IDENT',    r'[A-Za-z]+'),     # Identifiers and functions
             ('OP',       r'[\+\-\*\^\/\(\)]'), # Arithmetic operators and parentheses
             ('SKIP',     r'[ \t]+'),        # Skip over spaces and tabs
             ('MISMATCH', r'.'),             # Any other character
@@ -116,7 +117,10 @@ class Parser:
                 if token['type'] == 'NUMBER':
                     output_queue.append(ConstantNode(token['value']))
                 elif token['type'] == 'IDENT':
-                    output_queue.append(VariableNode(token['value']))
+                    if token['value'] in self.functions:
+                        operator_stack.append(token['value'])  # Push function name
+                    else:
+                        output_queue.append(VariableNode(token['value']))
                 elif token['type'] == 'OP':
                     if token['value'] == '(':
                         operator_stack.append(token['value'])

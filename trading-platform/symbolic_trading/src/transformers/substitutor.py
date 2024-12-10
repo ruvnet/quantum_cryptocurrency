@@ -14,7 +14,7 @@ class Substitutor:
 
     def substitute(self, node):
         """
-        Substitute a value for a variable in an expression tree.
+        Substitute a value or expression for a variable in an expression tree.
         
         Args:
             node (ExpressionNode): The root node of the expression tree
@@ -26,7 +26,14 @@ class Substitutor:
             return node
         elif isinstance(node, VariableNode):
             if node.name == self.variable:
-                return ConstantNode(self.value)
+                if isinstance(self.value, (int, float)):
+                    return ConstantNode(float(self.value))
+                elif isinstance(self.value, str):
+                    from src.parser.parser import Parser
+                    parser = Parser()
+                    return parser.parse_expression(self.value)
+                else:
+                    return self.value  # Already an ExpressionNode
             else:
                 return node
         elif isinstance(node, OperatorNode):

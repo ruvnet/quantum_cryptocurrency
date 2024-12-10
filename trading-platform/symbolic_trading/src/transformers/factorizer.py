@@ -96,6 +96,10 @@ class Factorizer:
                     return self.get_degree(node.left, variable) * node.right.value
                 else:
                     raise ValueError("Variable exponent in degree calculation")
+            elif node.operator == '/':
+                # For f(x)/g(x), degree is deg(f) - deg(g)
+                return (self.get_degree(node.left, variable) - 
+                       self.get_degree(node.right, variable))
             else:
                 raise ValueError(f"Unknown operator in degree calculation: {node.operator}")
         else:
