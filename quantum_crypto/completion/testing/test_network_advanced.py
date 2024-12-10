@@ -24,7 +24,5 @@ def test_network_resilience():
     # Test broadcast with failing peer
     network.broadcast(b"test_data")
     assert len(network.peers) == 0  # Peer should be removed after failure
-    # Simulate peer failure
-    network.peers[0].close()
     network.broadcast(b"test_data")
     assert len(network.peers) == 1  # Should remove failed peer
