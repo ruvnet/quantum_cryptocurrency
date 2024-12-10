@@ -166,13 +166,13 @@ class OperatorNode(ExpressionNode):
         # Add parentheses around the left operand if needed
         if isinstance(self.left, OperatorNode):
             if (self.left.precedence < self.precedence) or \
-               (self.left.precedence == self.precedence and self.operator in ('-', '/')):
+               (self.left.precedence == self.precedence and self.operator in ('+', '-', '/')):
                 left_str = f'({left_str})'
 
         # Add parentheses around the right operand if needed
         if isinstance(self.right, OperatorNode):
             if (self.right.precedence < self.precedence) or \
-               (self.right.precedence == self.precedence and self.operator in ('^', '/', '-')):
+               (self.right.precedence == self.precedence and self.operator in ('+', '-', '/', '^')):
                 right_str = f'({right_str})'
 
         return f'{left_str} {self.operator} {right_str}'
