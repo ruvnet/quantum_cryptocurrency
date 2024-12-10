@@ -1,5 +1,5 @@
 from .quantum_resource_manager import QuantumResourceManager
-from config.config import WILLOW_QUBITS, WILLOW_COHERENCE_TIME, ERROR_CORRECTION_ENABLED
+from quantum_crypto.config.config import WILLOW_QUBITS, WILLOW_COHERENCE_TIME, ERROR_CORRECTION_ENABLED
 
 qrm = QuantumResourceManager(
     qubits=WILLOW_QUBITS, 
