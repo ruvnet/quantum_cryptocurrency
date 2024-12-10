@@ -41,8 +41,32 @@ class Integrator:
                         node.right, 
                         self.integrate(node.left))
                 else:
-                    # Integration by parts needed
-                    raise NotImplementedError("Integration by parts not implemented")
+                    # Integration by parts: ∫u dv = uv - ∫v du
+                    # Choose u as the non-constant factor
+                    if isinstance(node.left, ConstantNode):
+                        u = node.right
+                        dv = node.left
+                    else:
+                        u = node.left
+                        dv = node.right
+                    
+                    # Get v by integrating dv
+                    v = self.integrate(dv)
+                    
+                    # Get du by differentiating u
+                    from src.transformers.differentiator import Differentiator
+                    differentiator = Differentiator(self.variable)
+                    du = differentiator.differentiate(u)
+                    
+                    # Calculate uv
+                    uv = OperatorNode('*', u, v)
+                    
+                    # Calculate ∫v du recursively
+                    v_du = OperatorNode('*', v, du)
+                    v_du_integral = self.integrate(v_du)
+                    
+                    # Return uv - ∫v du
+                    return OperatorNode('-', uv, v_du_integral)
             elif node.operator == '/':
                 if isinstance(node.right, ConstantNode):
                     # ∫ (f/c) dx = (1/c)*∫f dx
