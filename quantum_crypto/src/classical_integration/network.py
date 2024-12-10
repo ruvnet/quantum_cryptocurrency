@@ -6,15 +6,33 @@ class Network:
         self.node = node
         self.peers = []
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.running = False
 
     def start_server(self, host='0.0.0.0', port=8333):
         self.server.bind((host, port))
         self.server.listen()
+        self.running = True
         print(f"Node listening on {host}:{port}")
-        threading.Thread(target=self.listen_for_connections, daemon=True).start()
+        self.server_thread = threading.Thread(target=self.listen_for_connections, daemon=True)
+        self.server_thread.start()
+
+    def stop_server(self):
+        """Gracefully stop the server and clean up resources"""
+        self.running = False
+        # Create a temporary connection to unblock accept()
+        try:
+            tmp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            tmp_socket.connect(('localhost', self.server.getsockname()[1]))
+            tmp_socket.close()
+        except:
+            pass
+        self.server.close()
+        for peer in self.peers:
+            peer.close()
+        self.peers.clear()
 
     def listen_for_connections(self):
-        while True:
+        while self.running:
             client, address = self.server.accept()
             print(f"Connection from {address}")
             threading.Thread(target=self.handle_client, args=(client,), daemon=True).start()

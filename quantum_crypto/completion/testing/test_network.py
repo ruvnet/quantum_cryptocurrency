@@ -30,19 +30,22 @@ def test_server_start(test_network):
     # Give server time to start
     time.sleep(0.1)
     
-    # Try connecting to server
-    test_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    test_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    
+    connection_successful = False
+    test_socket = None
     try:
+        # Try connecting to server
+        test_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        test_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         test_socket.connect(('localhost', test_port))
         connection_successful = True
-    except:
+    except Exception as e:
+        print(f"Connection failed: {e}")
         connection_successful = False
     finally:
-        test_socket.close()
-        # Properly shutdown the server socket
-        test_network.server.shutdown(socket.SHUT_RDWR)
-        test_network.server.close()
+        if test_socket:
+            test_socket.close()
+        # Properly stop the server
+        test_network.stop_server()
+        time.sleep(0.1)  # Give time for cleanup
     
     assert connection_successful, "Server should accept connections"
