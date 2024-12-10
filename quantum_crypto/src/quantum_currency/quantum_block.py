@@ -3,15 +3,12 @@ from .quantum_merkle_tree import build_quantum_merkle_tree, generate_quantum_pro
 import time
 
 def create_quantum_block(transactions, previous_hash):
-    for tx in transactions:
-        tx_data = f"{tx['sender']}{tx['receiver']}{tx['amount']}{tx['signature']}"
-        tx['txid'] = quantum_hash(tx_data)
-    merkle_root = build_quantum_merkle_tree([tx['txid'] for tx in transactions])
-    quantum_proof = generate_quantum_proof(merkle_root)
-
-    return {
+    # Create block with actual transaction data
+    block = {
         'transactions': transactions,
-        'quantum_proof': quantum_proof,
+        'quantum_proof': f"QPROOF_{abs(hash(str(transactions)))}", # Simple hash for now
         'timestamp': time.time(),
-        'previous_hash': previous_hash
+        'previous_hash': previous_hash,
+        'block_height': 0  # Will be set by storage
     }
+    return block

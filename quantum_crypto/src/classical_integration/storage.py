@@ -10,9 +10,13 @@ class Storage:
 
     def append_block(self, block):
         blockchain = self.get_blockchain()
+        # Set block height
+        block['block_height'] = len(blockchain)
         blockchain.append(block)
         with open(self.storage_file, 'w') as f:
             json.dump(blockchain, f, indent=4)
+        print(f"Block #{block['block_height']} added to chain")
+        return block
 
     def get_blockchain(self):
         with open(self.storage_file, 'r') as f:
