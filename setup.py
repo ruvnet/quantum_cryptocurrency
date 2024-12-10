@@ -3,7 +3,8 @@ from setuptools import setup, find_packages
 setup(
     name="quantum_crypto",
     version="0.1.0",
-    packages=find_packages(),
+    package_dir={"": "quantum_crypto/src"},
+    packages=find_packages(where="quantum_crypto/src"),
     install_requires=[
         "numpy",
         "cryptography",
