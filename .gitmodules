@@ -1,0 +1,3 @@
+[submodule "trading-platform/symbolic_trading"]
+	path = trading-platform/symbolic_trading
+	url = ./trading-platform/symbolic_trading
