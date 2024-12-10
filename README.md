@@ -435,6 +435,44 @@ quantum_crypto/
 └── deployment/               # Deployment configurations
 ```
 
+### Architecture Overview
+```mermaid
+graph TB
+    subgraph Quantum Layer
+        QRM[Quantum Resource Manager]
+        QH[Quantum Hash]
+        QMT[Quantum Merkle Tree]
+        QB[Quantum Block]
+        QC[Quantum Consensus]
+    end
+    
+    subgraph Classical Layer
+        Node[Node Manager]
+        Network[P2P Network]
+        Storage[Blockchain Storage]
+        TX[Transaction Handler]
+    end
+    
+    User[User/Client] --> TX
+    TX --> QH
+    QH --> QMT
+    QMT --> QB
+    QB --> QC
+    
+    QRM --> QH
+    QRM --> QMT
+    QRM --> QB
+    
+    Node --> QC
+    Node --> Storage
+    Node --> Network
+    
+    Network --> Node
+    
+    style Quantum Layer fill:#f9f,stroke:#333,stroke-width:2px
+    style Classical Layer fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 ### Key Components
 - **Quantum Block**: Implementation of quantum-enhanced blocks
 - **Quantum Consensus**: Hybrid consensus mechanism
