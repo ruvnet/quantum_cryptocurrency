@@ -14,10 +14,12 @@ class Simplifier:
 
     def simplify(self, node):
         if isinstance(node, OperatorNode):
-            if node.operator in ['sin', 'cos', 'tan', 'log', 'exp']:
-                # Trigonometric and transcendental functions need special handling
-                raise NotImplementedError("Trigonometric simplification not implemented")
-            
+            # Check for trig functions first
+            if node.operator in ['sin', 'cos', 'tan']:
+                raise NotImplementedError("Trigonometric pattern matching not implemented")
+            elif node.operator in ['log', 'exp']:
+                raise NotImplementedError("Transcendental function simplification not implemented")
+                
         changed = True
         while changed:
             changed = False
