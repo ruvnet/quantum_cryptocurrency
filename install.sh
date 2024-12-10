@@ -38,7 +38,7 @@ check_dependencies() {
     if [ "$1" == "docker" ] && ! command -v docker-compose &> /dev/null; then
         echo -e "${RED}Docker Compose is not installed. Please install Docker Compose first.${NC}"
         exit 1
-    }
+    fi
     
     echo -e "${GREEN}All required dependencies are installed.${NC}\n"
 }
