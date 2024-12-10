@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  trading-platform:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+      - TRADING_MODE=${TRADING_MODE:-simulation}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - OPENROUTER_BASE_URL=${OPENROUTER_BASE_URL:-https://api.openrouter.ai/api/v1}
+      - OPENROUTER_DEFAULT_MODEL=${OPENROUTER_DEFAULT_MODEL:-anthropic/claude-2}
+      - OPENROUTER_REQUESTS_PER_MINUTE=${OPENROUTER_REQUESTS_PER_MINUTE:-50}
+      - CACHE_DURATION_MINUTES=${CACHE_DURATION_MINUTES:-60}
+      - TRADING_PAIR=${TRADING_PAIR:-BTC-USD}
+      - TRADING_INTERVAL=${TRADING_INTERVAL:-5m}
+      - MAX_TOKENS_PER_REQUEST=${MAX_TOKENS_PER_REQUEST:-2000}
+      - MONITORING_ENABLED=${MONITORING_ENABLED:-true}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    ports:
+      - "8000:8000"  # For potential REST API
+    restart: unless-stopped

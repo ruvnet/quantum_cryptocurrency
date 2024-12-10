@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  math-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python src/main.py --component math
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+      - TRADING_MODE=${TRADING_MODE:-simulation}
+      - COMPONENT=math
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    ports:
+      - "8001:8001"  # Math engine API port
+
+  trading-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python src/main.py --component trading
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+      - TRADING_MODE=${TRADING_MODE:-simulation}
+      - COMPONENT=trading
+      - TRADING_PAIR=${TRADING_PAIR:-BTC-USD}
+      - TRADING_INTERVAL=${TRADING_INTERVAL:-5m}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    ports:
+      - "8002:8002"  # Trading engine API port
+    depends_on:
+      - math-engine
+
+  openrouter-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python src/main.py --component openrouter
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+      - COMPONENT=openrouter
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - OPENROUTER_BASE_URL=${OPENROUTER_BASE_URL:-https://api.openrouter.ai/api/v1}
+      - OPENROUTER_DEFAULT_MODEL=${OPENROUTER_DEFAULT_MODEL:-anthropic/claude-2}
+      - OPENROUTER_REQUESTS_PER_MINUTE=${OPENROUTER_REQUESTS_PER_MINUTE:-50}
+      - CACHE_DURATION_MINUTES=${CACHE_DURATION_MINUTES:-60}
+      - MAX_TOKENS_PER_REQUEST=${MAX_TOKENS_PER_REQUEST:-2000}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    ports:
+      - "8003:8003"  # OpenRouter client API port
+    depends_on:
+      - math-engine
+      - trading-engine
+
+networks:
+  default:
+    driver: bridge
