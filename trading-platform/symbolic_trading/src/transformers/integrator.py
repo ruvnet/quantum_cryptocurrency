@@ -113,8 +113,11 @@ class Integrator:
                 if isinstance(base, VariableNode) and base.name == self.variable:
                     # Result is x^(n+1)/(n+1)
                     power = node.right.right
+                    # Create n+1 with explicit parentheses
                     new_power = OperatorNode('+', power, ConstantNode(1))
+                    # Create x^(n+1)
                     numerator = OperatorNode('^', base, new_power)
+                    # Create x^(n+1)/(n+1)
                     return OperatorNode('/', numerator, new_power)
         
         # For other cases, use standard integration rules
