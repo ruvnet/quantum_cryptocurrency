@@ -74,8 +74,11 @@ class Integrator:
                         OperatorNode('/', ConstantNode(1), node.right),
                         self.integrate(node.left))
                 else:
-                    # Try integration by parts for rational functions
-                    return self._integrate_by_parts(node)
+                    # For non-constant denominators, try standard integration
+                    return self.integrate(
+                        OperatorNode('*', node.left, 
+                            OperatorNode('^', node.right, ConstantNode(-1)))
+                    )
             elif node.operator == '^':
                 if isinstance(node.left, VariableNode) and node.left.name == self.variable:
                     # Handle x^n where n is any expression

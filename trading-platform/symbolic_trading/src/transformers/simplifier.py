@@ -8,6 +8,7 @@ class Simplifier:
             self.simplify_multiply_one,
             self.simplify_power_zero,
             self.simplify_power_one,
+            self.simplify_nested_powers,
             self.combine_like_terms,
             self.simplify_nested_operations
         ]
@@ -101,6 +102,20 @@ class Simplifier:
             return OperatorNode('+', new_left, new_right), True
             
         return node, (left_changed or right_changed)
+
+    def simplify_nested_powers(self, node):
+        """Simplify nested power expressions like (x^n)^m -> x^(n*m)"""
+        if isinstance(node, OperatorNode) and node.operator == '^':
+            if isinstance(node.left, OperatorNode) and node.left.operator == '^':
+                # Case: (x^n)^m -> x^(n*m)
+                base = node.left.left
+                inner_exp = node.left.right
+                outer_exp = node.right
+                # Create n*m
+                new_exp = OperatorNode('*', inner_exp, outer_exp)
+                # Create x^(n*m)
+                return OperatorNode('^', base, new_exp), True
+        return node, False
 
     def simplify_nested_operations(self, node):
         # Recursively simplify child nodes
