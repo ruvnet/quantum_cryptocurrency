@@ -177,6 +177,29 @@ node.validate_and_append(transaction, quantum_proof)
 3. Commit changes
 4. Push and open a Pull Request
 
+## User Guide
+
+### Getting Started
+1. **Installation**
+   - Follow the deployment instructions to set up your node
+   - Generate your quantum-resistant key pair
+   - Configure your environment variables
+
+2. **Creating Transactions**
+   - Use the transaction interface to send quantum currency
+   - Ensure sufficient balance before initiating transactions
+   - Wait for quantum proof generation and confirmation
+
+3. **Viewing Blockchain**
+   - Access the block explorer to view recent blocks
+   - Monitor transaction status and confirmations
+   - Verify quantum proofs for enhanced security
+
+### Features
+- **Secure Transactions**: Leveraging quantum-resistant cryptography
+- **Transparent Operations**: Quantum processes handled seamlessly
+- **User-Friendly Interface**: Intuitive dashboard and forms
+
 ## License
 MIT License - see [LICENSE](LICENSE)
 
