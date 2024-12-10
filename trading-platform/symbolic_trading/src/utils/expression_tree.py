@@ -87,14 +87,17 @@ class VariableNode(ExpressionNode):
 class OperatorNode(ExpressionNode):
     """Node representing a mathematical operator."""
     
+    # Define supported functions
+    functions = {'sin', 'cos', 'tan', 'log', 'exp'}
+    
     def __init__(self, operator, left, right):
         """
         Initialize operator node.
         
         Args:
-            operator (str): The operator symbol (+, -, *, /, ^)
-            left (ExpressionNode): Left operand
-            right (ExpressionNode): Right operand
+            operator (str): The operator symbol (+, -, *, /, ^) or function name
+            left (ExpressionNode): Left operand or function argument
+            right (ExpressionNode): Right operand (None for functions)
         """
         self.operator = operator
         self.left = left
@@ -142,7 +145,8 @@ class OperatorNode(ExpressionNode):
         Returns:
             str: String representation of the operation
         """
-        if self.operator in self.functions:
+        if self.operator in OperatorNode.functions:
+            # Handle function application
             return f"{self.operator}({self.left})"
             
         # Handle binary operators
