@@ -142,17 +142,20 @@ class OperatorNode(ExpressionNode):
         Returns:
             str: String representation of the operation
         """
-        # Add parentheses based on operator precedence
+        if self.operator in self.functions:
+            return f"{self.operator}({self.left})"
+            
+        # Handle binary operators
         if self.operator in ['+', '-']:
-            return f"({self.left} {self.operator} {self.right})"
+            return f"{self.left} {self.operator} {self.right}"
         elif self.operator in ['*', '/']:
             left_str = f"({self.left})" if isinstance(self.left, OperatorNode) and self.left.operator in ['+', '-'] else str(self.left)
             right_str = f"({self.right})" if isinstance(self.right, OperatorNode) and self.right.operator in ['+', '-'] else str(self.right)
             return f"{left_str} {self.operator} {right_str}"
         else:  # ^ operator
             left_str = f"({self.left})" if isinstance(self.left, OperatorNode) else str(self.left)
-            right_str = f"({self.right})" if isinstance(self.right, OperatorNode) else str(self.right)
-            return f"{left_str} {self.operator} {right_str}"
+            right_str = str(self.right)
+            return f"{left_str}{self.operator}{right_str}"
 
     def get_variables(self):
         """Get set of all variables in the operation."""

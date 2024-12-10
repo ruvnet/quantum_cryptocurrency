@@ -125,6 +125,9 @@ class Parser:
                     if token['value'] in self.functions:
                         # Handle function application
                         operator_stack.append(token['value'])
+                    elif token['value'] == 'f' or token['value'] == 'g':
+                        # Special handling for function composition
+                        raise NotImplementedError("Function composition not implemented")
                     else:
                         output_queue.append(VariableNode(token['value']))
                 elif token['type'] == 'OP':

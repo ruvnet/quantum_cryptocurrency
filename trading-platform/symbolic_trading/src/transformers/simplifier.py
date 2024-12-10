@@ -13,6 +13,10 @@ class Simplifier:
         ]
 
     def simplify(self, node):
+        if isinstance(node, OperatorNode):
+            if node.operator in ['sin', 'cos', 'log', 'exp']:
+                raise NotImplementedError(f"{node.operator} operations not implemented")
+                
         changed = True
         while changed:
             changed = False
@@ -83,6 +87,8 @@ class Simplifier:
 
     def format_constant(self, value):
         """Format constant values consistently."""
-        if value == int(value):
-            return str(int(value))
+        if isinstance(value, (int, float)):
+            if value.is_integer():
+                return str(int(value))
+            return str(float(value)).rstrip('0').rstrip('.')
         return str(value)
