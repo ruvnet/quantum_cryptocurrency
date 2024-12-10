@@ -16,25 +16,25 @@ print_header() {
 # Function to run unit tests
 run_unit_tests() {
     echo -e "${BLUE}Running unit tests...${NC}"
-    cd quantum_crypto && PYTHONPATH=/workspaces/quantum_cryptocurrency python -m pytest completion/testing/test_unit.py -v
+    PYTHONPATH=/workspaces/quantum_cryptocurrency python -m pytest quantum_crypto/completion/testing/test_unit.py -v
 }
 
 # Function to run integration tests
 run_integration_tests() {
     echo -e "${BLUE}Running integration tests...${NC}"
-    cd quantum_crypto && PYTHONPATH=/workspaces/quantum_cryptocurrency python -m pytest completion/testing/integration_tests.py -v
+    PYTHONPATH=/workspaces/quantum_cryptocurrency python -m pytest quantum_crypto/completion/testing/integration_tests.py -v
 }
 
 # Function to run system tests
 run_system_tests() {
     echo -e "${BLUE}Running system tests...${NC}"
-    cd quantum_crypto && PYTHONPATH=/workspaces/quantum_cryptocurrency python -m pytest completion/testing/system_tests.py -v
+    PYTHONPATH=/workspaces/quantum_cryptocurrency python -m pytest quantum_crypto/completion/testing/system_tests.py -v
 }
 
 # Function to run all tests
 run_all_tests() {
     echo -e "${BLUE}Running all tests...${NC}"
-    cd quantum_crypto && PYTHONPATH=/workspaces/quantum_cryptocurrency python -m pytest completion/testing/ -v
+    PYTHONPATH=/workspaces/quantum_cryptocurrency python -m pytest quantum_crypto/completion/testing/ -v
 }
 
 # Main menu
