@@ -1,6 +1,6 @@
-from quantum_crypto.src.classical_integration.node import Node
-from quantum_crypto.src.classical_integration.network import Network
-from quantum_crypto.src.classical_integration.transactions import create_transaction
+from quantum_crypto.classical_integration.node import Node
+from quantum_crypto.classical_integration.network import Network
+from quantum_crypto.classical_integration.transactions import create_transaction
 import time
 
 def main():
