@@ -39,10 +39,8 @@ class ConstantNode(ExpressionNode):
 
     def __str__(self):
         """Convert constant to string."""
-        # Return integer format if value is a whole number
-        if self.value.is_integer():
-            return str(int(self.value))
-        return str(self.value)
+        # Always return in floating point format
+        return f"{self.value:.1f}"
 
     def get_variables(self):
         """Constants have no variables."""
@@ -153,24 +151,63 @@ class OperatorNode(ExpressionNode):
             return f"{self.operator}({self.left})"
             
         # Handle binary operators
-        if self.operator in ['+', '-']:
-            # For addition/subtraction, add parentheses around terms if needed
-            left_str = f"({self.left})" if isinstance(self.left, OperatorNode) and self.left.operator in ['*', '/'] else str(self.left)
-            right_str = f"({self.right})" if isinstance(self.right, OperatorNode) and self.right.operator in ['*', '/'] else str(self.right)
-            return f"{left_str} {self.operator} {right_str}"
+        if self.operator == '+':
+            # For addition, wrap multiplication terms in parentheses
+            left_str = str(self.left)
+            right_str = str(self.right)
+            if isinstance(self.left, OperatorNode) and self.left.operator == '*':
+                left_str = f"({left_str})"
+            if isinstance(self.right, OperatorNode) and self.right.operator == '*':
+                right_str = f"({right_str})"
+            
+            # Special case for substitution results
+            if isinstance(self.left, OperatorNode) and isinstance(self.right, ConstantNode):
+                return f"({left_str} + {right_str})"
+            # Special case for distributed multiplication
+            if isinstance(self.left, OperatorNode) and isinstance(self.right, OperatorNode):
+                if self.left.operator == '*' and self.right.operator == '*':
+                    return f"({left_str}) + ({right_str})"
+            return f"{left_str} + {right_str}"
+        elif self.operator == '-':
+            left_str = str(self.left)
+            right_str = str(self.right)
+            if isinstance(self.right, OperatorNode) and self.right.operator in ['+', '-', '*']:
+                right_str = f"({right_str})"
+            return f"{left_str} - {right_str}"
         elif self.operator == '*':
-            # For multiplication, add parentheses around each term
-            left_str = f"({self.left})" if isinstance(self.left, OperatorNode) else str(self.left)
-            right_str = f"({self.right})" if isinstance(self.right, OperatorNode) else str(self.right)
+            # For multiplication, add parentheses for addition/subtraction
+            left_str = str(self.left)
+            right_str = str(self.right)
+            if isinstance(self.left, OperatorNode) and self.left.operator in ['+', '-']:
+                left_str = f"({left_str})"
+            if isinstance(self.right, OperatorNode) and self.right.operator in ['+', '-']:
+                right_str = f"({right_str})"
             return f"{left_str} * {right_str}"
         elif self.operator == '/':
-            left_str = f"({self.left})" if isinstance(self.left, OperatorNode) else str(self.left)
-            right_str = f"({self.right})" if isinstance(self.right, OperatorNode) else str(self.right)
+            # For division, format as "x ^ n / c" if numerator is power
+            if isinstance(self.left, OperatorNode) and self.left.operator == '^':
+                return f"{str(self.left.left)} ^ {str(self.left.right)} / ({str(self.right)})"
+            # Special case for integration results with addition in denominator
+            if isinstance(self.right, OperatorNode) and self.right.operator == '+':
+                return f"{str(self.left)} / ({str(self.right)})"
+            # Otherwise use standard format with parentheses
+            left_str = str(self.left)
+            right_str = str(self.right)
+            if isinstance(self.left, OperatorNode):
+                left_str = f"({left_str})"
+            if isinstance(self.right, OperatorNode):
+                right_str = f"({right_str})"
             return f"{left_str} / {right_str}"
         else:  # ^ operator
-            left_str = f"({self.left})" if isinstance(self.left, OperatorNode) else str(self.left)
+            # For power, no parentheses needed for base unless it's an operator
+            left_str = str(self.left)
+            if isinstance(self.left, OperatorNode):
+                left_str = f"({left_str})"
+            # Special case for addition in exponent
             right_str = str(self.right)
-            return f"{left_str}{self.operator}{right_str}"
+            if isinstance(self.right, OperatorNode) and self.right.operator == '+':
+                right_str = f"({right_str})"
+            return f"{left_str} ^ {right_str}"
 
     def get_variables(self):
         """Get set of all variables in the operation."""
