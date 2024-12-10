@@ -39,6 +39,9 @@ class ConstantNode(ExpressionNode):
 
     def __str__(self):
         """Convert constant to string."""
+        # Return integer format if value is a whole number
+        if self.value.is_integer():
+            return str(int(self.value))
         return str(self.value)
 
     def get_variables(self):
@@ -151,16 +154,19 @@ class OperatorNode(ExpressionNode):
             
         # Handle binary operators
         if self.operator in ['+', '-']:
-            return f"{self.left} {self.operator} {self.right}"
-        elif self.operator in ['*', '/']:
-            left_str = str(self.left)
-            right_str = str(self.right)
-            # Only add parentheses if the operands are complex expressions
-            if isinstance(self.left, OperatorNode) and self.left.operator in ['+', '-']:
-                left_str = f"({left_str})"
-            if isinstance(self.right, OperatorNode) and self.right.operator in ['+', '-']:
-                right_str = f"({right_str})"
+            # For addition/subtraction, add parentheses around terms if needed
+            left_str = f"({self.left})" if isinstance(self.left, OperatorNode) and self.left.operator in ['*', '/'] else str(self.left)
+            right_str = f"({self.right})" if isinstance(self.right, OperatorNode) and self.right.operator in ['*', '/'] else str(self.right)
             return f"{left_str} {self.operator} {right_str}"
+        elif self.operator == '*':
+            # For multiplication, add parentheses around each term
+            left_str = f"({self.left})" if isinstance(self.left, OperatorNode) else str(self.left)
+            right_str = f"({self.right})" if isinstance(self.right, OperatorNode) else str(self.right)
+            return f"{left_str} * {right_str}"
+        elif self.operator == '/':
+            left_str = f"({self.left})" if isinstance(self.left, OperatorNode) else str(self.left)
+            right_str = f"({self.right})" if isinstance(self.right, OperatorNode) else str(self.right)
+            return f"{left_str} / {right_str}"
         else:  # ^ operator
             left_str = f"({self.left})" if isinstance(self.left, OperatorNode) else str(self.left)
             right_str = str(self.right)

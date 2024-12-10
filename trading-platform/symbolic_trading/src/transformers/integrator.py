@@ -77,14 +77,20 @@ class Integrator:
                     # Complex rational function integration
                     raise NotImplementedError("Integration of rational functions not implemented")
             elif node.operator == '^':
-                if isinstance(node.left, VariableNode) and node.left.name == self.variable and isinstance(node.right, ConstantNode):
-                    # ∫ x^n dx = x^(n+1)/(n+1)
-                    new_power = ConstantNode(node.right.value + 1)
-                    numerator = OperatorNode('^', node.left, new_power)
-                    return OperatorNode('/', numerator, new_power)
-                else:
-                    # Other cases of power integration
-                    raise NotImplementedError("Integration of general powers not implemented")
+                if isinstance(node.left, VariableNode) and node.left.name == self.variable:
+                    # Handle x^n where n is any expression
+                    if isinstance(node.right, ConstantNode):
+                        # Standard power rule: ∫ x^n dx = x^(n+1)/(n+1)
+                        new_power = ConstantNode(node.right.value + 1)
+                        numerator = OperatorNode('^', node.left, new_power)
+                        return OperatorNode('/', numerator, new_power)
+                    elif isinstance(node.right, VariableNode):
+                        # Handle case where exponent is a variable
+                        new_power = OperatorNode('+', node.right, ConstantNode(1))
+                        numerator = OperatorNode('^', node.left, new_power)
+                        return OperatorNode('/', numerator, new_power)
+                # For other cases, try integration by parts
+                return self._integrate_by_parts(node)
             else:
                 raise ValueError(f"Unknown operator: {node.operator}")
         else:
