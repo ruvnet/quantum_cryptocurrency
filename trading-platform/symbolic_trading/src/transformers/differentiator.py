@@ -32,9 +32,16 @@ class Differentiator:
         if isinstance(ast, OperatorNode):
             if ast.operator == '^' and isinstance(ast.left, VariableNode) and ast.left.name == self.variable:
                 # Power rule: d/dx(x^n) = n * x^(n-1)
-                power = ast.right.value
-                coefficient = ConstantNode(power)
-                new_power = ConstantNode(power - 1.0)
+                if isinstance(ast.right, ConstantNode):
+                    # Case: x^c where c is constant
+                    power = ast.right.value
+                    coefficient = ConstantNode(power)
+                    new_power = ConstantNode(power - 1.0)
+                else:
+                    # Case: x^n where n is variable
+                    power = ast.right
+                    coefficient = power
+                    new_power = OperatorNode('-', power, ConstantNode(1.0))
                 power_term = OperatorNode('^', VariableNode(self.variable), new_power)
                 return OperatorNode('*', coefficient, power_term)
                 
