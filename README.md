@@ -46,28 +46,69 @@ A next-generation cryptocurrency platform that leverages quantum computing capab
 - Node.js and npm (for frontend components)
 - PostgreSQL
 
-### Setup
+### Setup Using Installation Script
 1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/quantum_cryptocurrency.git
 cd quantum_cryptocurrency
 ```
 
-2. Install Python dependencies:
+2. Run the installation script:
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+The installation script provides two options:
+- Local Installation (Single Node)
+- Docker Installation (Multi-Node Cluster)
+
+Follow the prompts to complete your preferred installation method.
+
+### Manual Setup
+1. Install Python dependencies:
 ```bash
 pip install -r quantum_crypto/requirements.txt
 ```
 
-3. Configure environment variables:
+2. Configure environment variables:
 ```bash
 cp quantum_crypto/config/sample.env .env
 # Edit .env with your configuration
 ```
 
-4. Start the services:
+3. Start the services:
 ```bash
 docker-compose -f quantum_crypto/completion/deployment/docker/docker-compose.yml up
 ```
+
+## Running the Node
+
+Use the start script to run the node:
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+The start script offers options to:
+- Start Local Node
+- Start Docker Cluster
+
+## Running Tests
+
+The test suite can be run using the test script:
+```bash
+chmod +x tests.sh
+./tests.sh
+```
+
+Test script features:
+- Run Unit Tests
+- Run Integration Tests
+- Run System Tests
+- Run All Tests
+- Coverage Reports
+- Verbose Output Options
 
 ## Development Overview
 
