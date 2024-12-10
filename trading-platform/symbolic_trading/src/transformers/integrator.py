@@ -87,13 +87,17 @@ class Integrator:
                         new_power = ConstantNode(node.right.value + 1)
                         numerator = OperatorNode('^', node.left, new_power)
                         return OperatorNode('/', numerator, new_power)
-                    elif isinstance(node.right, VariableNode):
-                        # Handle case where exponent is a variable
+                    else:
+                        # For variable exponent, use the same rule but with expressions
                         new_power = OperatorNode('+', node.right, ConstantNode(1))
                         numerator = OperatorNode('^', node.left, new_power)
                         return OperatorNode('/', numerator, new_power)
-                # For other cases, try integration by parts
-                return self._integrate_by_parts(node)
+                else:
+                    # For other cases, try standard integration
+                    return self.integrate(
+                        OperatorNode('*', node.left,
+                            OperatorNode('^', node.right, ConstantNode(-1)))
+                    )
             else:
                 raise ValueError(f"Unknown operator: {node.operator}")
         else:
