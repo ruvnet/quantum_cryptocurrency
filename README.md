@@ -229,10 +229,6 @@ Key components:
 - Classical blockchain integration
 - Modular design with specific modules for different functionalities
 
-### Architecture Overview
-```
-[User] -> [Classical Layer: Transactions, Storage, Network, Node] -> [Quantum Layer: Hash, Merkle, Block, Consensus, QRM]
-```
 
 ### Key Components
 - Quantum Block
