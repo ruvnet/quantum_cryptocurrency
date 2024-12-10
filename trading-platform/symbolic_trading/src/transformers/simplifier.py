@@ -59,11 +59,8 @@ class Simplifier:
             right_is_zero = isinstance(node.right, ConstantNode) and node.right.value == 0
             
             if left_is_zero or right_is_zero:
-                # If either operand is zero, determine if it's an integer zero
-                if left_is_zero:
-                    return ConstantNode(0 if isinstance(node.left.value, int) else 0.0), True
-                else:  # right_is_zero
-                    return ConstantNode(0 if isinstance(node.right.value, int) else 0.0), True
+                # Always return integer 0 for multiplication by zero
+                return ConstantNode(0), True
         return node, False
 
     def simplify_multiply_one(self, node):
