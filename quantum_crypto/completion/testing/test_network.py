@@ -21,7 +21,7 @@ def test_network_initialization(test_network):
 
 def test_server_start(test_network):
     """Test server starts and listens on specified port"""
-    test_port = 8334  # Use different port for testing
+    test_port = 8399  # Use a less common port for testing
     test_network.start_server(port=test_port)
     
     # Give server time to start
@@ -36,5 +36,6 @@ def test_server_start(test_network):
         connection_successful = False
     finally:
         test_socket.close()
+        test_network.server.close()  # Clean up server socket
     
     assert connection_successful, "Server should accept connections"
