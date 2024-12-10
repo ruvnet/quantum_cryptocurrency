@@ -1,7 +1,7 @@
-from src.quantum_currency.quantum_block import create_quantum_block
-from src.quantum_currency.quantum_consensus import validate_block
-from src.classical_integration.transactions import Transaction
-from src.classical_integration.storage import Storage
+from ..quantum_currency.quantum_block import create_quantum_block
+from ..quantum_currency.quantum_consensus import validate_block
+from .transactions import Transaction
+from .storage import Storage
 
 class Node:
     def __init__(self):
