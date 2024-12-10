@@ -22,6 +22,9 @@ def test_network_initialization(test_network):
 def test_server_start(test_network):
     """Test server starts and listens on specified port"""
     test_port = 8399  # Use a less common port for testing
+    
+    # Configure server socket with SO_REUSEADDR
+    test_network.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     test_network.start_server(port=test_port)
     
     # Give server time to start
@@ -29,6 +32,8 @@ def test_server_start(test_network):
     
     # Try connecting to server
     test_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    test_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    
     try:
         test_socket.connect(('localhost', test_port))
         connection_successful = True
@@ -36,6 +41,8 @@ def test_server_start(test_network):
         connection_successful = False
     finally:
         test_socket.close()
-        test_network.server.close()  # Clean up server socket
+        # Properly shutdown the server socket
+        test_network.server.shutdown(socket.SHUT_RDWR)
+        test_network.server.close()
     
     assert connection_successful, "Server should accept connections"
