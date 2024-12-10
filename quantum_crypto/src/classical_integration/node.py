@@ -10,10 +10,14 @@ class Node:
 
     def add_transaction(self, transaction):
         self.pending_transactions.append(transaction)
+        print(f"Transaction added to pending pool. Total pending: {len(self.pending_transactions)}")
 
     def create_block(self):
+        print("Creating new block with", len(self.pending_transactions), "transactions")
         previous_hash = self.storage.get_last_block_hash()
         block = create_quantum_block(self.pending_transactions, previous_hash)
+        
+        # For initial implementation, always validate as true
         if validate_block(block):
             self.storage.append_block(block)
             self.pending_transactions = []
