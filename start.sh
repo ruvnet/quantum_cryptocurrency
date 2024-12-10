@@ -20,7 +20,7 @@ start_local() {
     PYTHONPATH=$PYTHONPATH:/workspaces/quantum_cryptocurrency python quantum_crypto/src/main.py
 }
 
-# Function to start Docker cluster
+# Function to manage Docker cluster
 start_docker() {
     echo -e "${BLUE}Starting Docker cluster...${NC}"
     
@@ -30,12 +30,54 @@ start_docker() {
         cp quantum_crypto/config/sample.env quantum_crypto/config/.env
     fi
     
-    # Start Docker services
-    cd /workspaces/quantum_cryptocurrency
-    docker-compose -f quantum_crypto/completion/deployment/docker/docker-compose.yml up -d
-    
-    echo -e "${GREEN}Docker cluster started!${NC}"
-    echo -e "To view logs, run: ${BLUE}docker-compose logs -f${NC}"
+    while true; do
+        echo -e "\n${YELLOW}Docker Cluster Management:${NC}"
+        echo "1) Start Cluster"
+        echo "2) Stop Cluster"
+        echo "3) View Logs"
+        echo "4) List Containers"
+        echo "5) Restart Cluster"
+        echo "6) Check Container Health"
+        echo "7) Return to Main Menu"
+        
+        read -p "Enter your choice (1-7): " docker_choice
+        
+        case $docker_choice in
+            1)
+                cd /workspaces/quantum_cryptocurrency
+                docker-compose -f quantum_crypto/completion/deployment/docker/docker-compose.yml up -d
+                echo -e "${GREEN}Docker cluster started!${NC}"
+                ;;
+            2)
+                docker-compose -f quantum_crypto/completion/deployment/docker/docker-compose.yml down
+                echo -e "${YELLOW}Docker cluster stopped.${NC}"
+                ;;
+            3)
+                docker-compose -f quantum_crypto/completion/deployment/docker/docker-compose.yml logs -f
+                ;;
+            4)
+                echo -e "\n${BLUE}Active Containers:${NC}"
+                docker-compose -f quantum_crypto/completion/deployment/docker/docker-compose.yml ps
+                ;;
+            5)
+                docker-compose -f quantum_crypto/completion/deployment/docker/docker-compose.yml restart
+                echo -e "${GREEN}Docker cluster restarted!${NC}"
+                ;;
+            6)
+                echo -e "\n${BLUE}Container Health Status:${NC}"
+                docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Health}}"
+                ;;
+            7)
+                return
+                ;;
+            *)
+                echo -e "\n${RED}Invalid choice. Please select 1-7.${NC}"
+                ;;
+        esac
+        
+        echo -e "\nPress Enter to continue..."
+        read
+    done
 }
 
 # Main menu
