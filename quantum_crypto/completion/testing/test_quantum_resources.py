@@ -29,3 +29,27 @@ def test_resource_cleanup():
     state = qrm.initialize_quantum_state("test_data")
     qrm.cleanup_resources()
     assert qrm.active_states == 0, "All quantum states should be cleaned up"
+
+def test_quantum_state_initialization_limits():
+    """Test quantum state initialization limits"""
+    qrm = QuantumResourceManager(qubits=3, coherence_time=100, error_correction=True)
+    state1 = qrm.initialize_quantum_state("data1")
+    state2 = qrm.initialize_quantum_state("data2")
+    state3 = qrm.initialize_quantum_state("data3")
+    assert qrm.active_states == 3
+    
+def test_gate_application_sequence():
+    """Test quantum gate application sequence"""
+    qrm = QuantumResourceManager(qubits=5, coherence_time=100, error_correction=True)
+    state = qrm.initialize_quantum_state("test_data")
+    gates = ['H', 'CNOT', 'T', 'S']
+    transformed_state = qrm.apply_gates(state, gates)
+    assert transformed_state != state
+
+def test_error_correction_threshold():
+    """Test error correction activation threshold"""
+    qrm = QuantumResourceManager(qubits=5, coherence_time=100, error_correction=True)
+    state = qrm.initialize_quantum_state("test_data")
+    noisy_state = qrm.simulate_noise(state)
+    corrected_state = qrm.apply_error_correction(noisy_state)
+    assert corrected_state.endswith('_corrected')

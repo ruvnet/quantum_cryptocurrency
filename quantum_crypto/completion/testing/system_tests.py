@@ -44,3 +44,45 @@ def test_invalid_block_rejection():
     # Create invalid block (empty transactions)
     with pytest.raises(ValueError):
         node.create_block()
+
+def test_full_node_lifecycle():
+    """Test complete node lifecycle including startup, transaction processing, and shutdown"""
+    node = Node()
+    network = Network(node)
+    network.start_server(port=8336)
+    
+    # Add transactions
+    tx1 = create_transaction('alice', 'bob', 10, 'sig1')
+    tx2 = create_transaction('carol', 'dave', 20, 'sig2')
+    node.add_transaction(tx1)
+    node.add_transaction(tx2)
+    
+    # Create block
+    block = node.create_block()
+    
+    # Verify block is stored
+    assert node.storage.get_last_block_hash() == block['quantum_proof']
+    
+    # Clean up
+    network.server.close()
+
+def test_network_synchronization():
+    """Test synchronization between multiple nodes"""
+    node1 = Node()
+    node2 = Node()
+    network1 = Network(node1)
+    network2 = Network(node2)
+    
+    network1.start_server(port=8337)
+    network2.start_server(port=8338)
+    
+    # Connect nodes
+    network1.connect_to_peer('localhost', 8338)
+    
+    # Create transaction on node1
+    tx = create_transaction('alice', 'bob', 10, 'sig1')
+    node1.add_transaction(tx)
+    block = node1.create_block()
+    
+    # Verify both nodes have the block
+    assert node1.storage.get_last_block_hash() == node2.storage.get_last_block_hash()
