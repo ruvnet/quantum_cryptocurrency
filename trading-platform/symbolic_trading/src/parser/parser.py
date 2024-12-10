@@ -8,7 +8,12 @@ class Parser:
             '-': {'precedence': 1, 'associativity': 'L'},
             '*': {'precedence': 2, 'associativity': 'L'},
             '/': {'precedence': 2, 'associativity': 'L'},
-            '^': {'precedence': 3, 'associativity': 'R'}
+            '^': {'precedence': 3, 'associativity': 'R'},
+            'sin': {'precedence': 4, 'associativity': 'R'},
+            'cos': {'precedence': 4, 'associativity': 'R'},
+            'tan': {'precedence': 4, 'associativity': 'R'},
+            'log': {'precedence': 4, 'associativity': 'R'},
+            'exp': {'precedence': 4, 'associativity': 'R'}
         }
         self.functions = {'sin', 'cos', 'tan', 'log', 'exp'}
 
@@ -118,7 +123,8 @@ class Parser:
                     output_queue.append(ConstantNode(token['value']))
                 elif token['type'] == 'IDENT':
                     if token['value'] in self.functions:
-                        operator_stack.append(token['value'])  # Push function name
+                        # Handle function application
+                        operator_stack.append(token['value'])
                     else:
                         output_queue.append(VariableNode(token['value']))
                 elif token['type'] == 'OP':
@@ -126,15 +132,26 @@ class Parser:
                         operator_stack.append(token['value'])
                     elif token['value'] == ')':
                         while operator_stack and operator_stack[-1] != '(':
-                            if len(output_queue) < 2:
-                                raise SyntaxError("Invalid expression: not enough operands")
                             op = operator_stack.pop()
-                            right = output_queue.pop()
-                            left = output_queue.pop()
-                            output_queue.append(OperatorNode(op, left, right))
+                            if op in self.functions:
+                                if len(output_queue) < 1:
+                                    raise SyntaxError("Invalid function call")
+                                arg = output_queue.pop()
+                                output_queue.append(OperatorNode(op, arg, None))
+                            else:
+                                if len(output_queue) < 2:
+                                    raise SyntaxError("Invalid expression")
+                                right = output_queue.pop()
+                                left = output_queue.pop()
+                                output_queue.append(OperatorNode(op, left, right))
                         if not operator_stack:
                             raise SyntaxError("Unmatched right parenthesis")
                         operator_stack.pop()  # Remove '('
+                        # Handle function application after closing parenthesis
+                        if operator_stack and operator_stack[-1] in self.functions:
+                            func = operator_stack.pop()
+                            arg = output_queue.pop()
+                            output_queue.append(OperatorNode(func, arg, None))
                     else:
                         while (operator_stack and operator_stack[-1] != '(' and
                                ((self.operators[token['value']]['associativity'] == 'L' and
