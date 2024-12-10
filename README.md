@@ -2,6 +2,143 @@
 
 A next-generation cryptocurrency platform that leverages quantum computing capabilities to provide enhanced security and scalability. This project integrates Google's Willow quantum chip features with classical blockchain technology to create a hybrid quantum-classical cryptocurrency system.
 
+## 🚀 Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/quantum_cryptocurrency.git
+cd quantum_cryptocurrency
+
+# Run the interactive installation script
+./install.sh
+
+# Start the node
+./start.sh
+```
+
+## 🌟 Key Features
+
+### Quantum Security
+- Quantum-resistant cryptographic keys using lattice-based cryptography
+- Quantum-enhanced hashing algorithms for block validation
+- Quantum Merkle tree implementation for secure transaction verification
+- Advanced quantum state management for enhanced security
+
+### Hybrid Architecture
+- Seamless integration between quantum and classical nodes
+- Scalable design supporting future quantum processor upgrades
+- Compatible with existing blockchain infrastructure
+- Distributed consensus mechanism combining classical and quantum approaches
+
+### Technical Innovation
+- Integration with Google's Willow quantum chip
+- Custom quantum resource management
+- Quantum-classical bridge for optimal performance
+- Error correction and decoherence mitigation
+
+## 🛠️ System Requirements
+
+### Local Installation
+- Python 3.9+
+- pip3
+- Virtual environment support
+
+### Docker Installation
+- Docker Engine 20.10+
+- Docker Compose 2.0+
+- 4GB RAM minimum
+- 10GB free disk space
+
+## 📦 Installation Options
+
+### Option 1: Local Installation
+```bash
+./install.sh
+# Select option 1 for local installation
+```
+
+### Option 2: Docker Installation
+```bash
+./install.sh
+# Select option 2 for Docker installation
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+Copy the sample environment file and configure as needed:
+```bash
+cp quantum_crypto/config/sample.env quantum_crypto/config/.env
+```
+
+Key configurations:
+- `WILLOW_QUBITS`: Number of qubits to utilize
+- `WILLOW_COHERENCE_TIME`: Quantum coherence time setting
+- `P2P_PORT`: Network port for P2P communication
+- `NODE_NAME`: Unique identifier for your node
+
+## 🚀 Running the Node
+
+### Start Options
+```bash
+./start.sh
+# Select:
+# 1) Start Local Node
+# 2) Start Docker Cluster
+```
+
+### Monitoring
+```bash
+# For Docker deployment
+docker-compose logs -f
+
+# For local deployment
+tail -f quantum_crypto/logs/node.log
+```
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+python -m pytest quantum_crypto/completion/testing/
+
+# Run specific test categories
+python -m pytest quantum_crypto/completion/testing/unit_tests.py
+python -m pytest quantum_crypto/completion/testing/integration_tests.py
+python -m pytest quantum_crypto/completion/testing/system_tests.py
+```
+
+## 📚 Documentation
+
+- [Technical Documentation](quantum_crypto/completion/documentation/technical_docs.md)
+- [User Guide](quantum_crypto/completion/documentation/user_guide.md)
+- [Deployment Guide](quantum_crypto/completion/documentation/deployment_guide.md)
+- [API Reference](quantum_crypto/completion/documentation/api_reference.md)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Google's Willow quantum chip team
+- The quantum computing research community
+- Contributors and maintainers
+
+## 📞 Support
+
+- Create an issue for bug reports
+- Join our [Discord community](https://discord.gg/quantumcrypto)
+- Email: support@quantumcrypto.dev
+
 ## Features
 
 ### Quantum Security
