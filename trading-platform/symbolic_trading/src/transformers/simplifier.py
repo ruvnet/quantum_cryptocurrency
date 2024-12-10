@@ -58,8 +58,21 @@ class Simplifier:
         return node, False
 
     def combine_like_terms(self, node):
-        # Placeholder for combining like terms
-        return node, False
+        """Combine like terms in an expression."""
+        if not isinstance(node, OperatorNode):
+            return node, False
+            
+        # First simplify children
+        node.left, left_changed = self.combine_like_terms(node.left)
+        node.right, right_changed = self.combine_like_terms(node.right)
+        
+        if node.operator == '*' and isinstance(node.right, OperatorNode) and node.right.operator == '+':
+            # Distribute: a * (b + c) -> (a * b) + (a * c)
+            new_left = OperatorNode('*', node.left, node.right.left)
+            new_right = OperatorNode('*', node.left, node.right.right)
+            return OperatorNode('+', new_left, new_right), True
+            
+        return node, (left_changed or right_changed)
 
     def simplify_nested_operations(self, node):
         # Recursively simplify child nodes
@@ -67,3 +80,9 @@ class Simplifier:
             node.left, _ = self.simplify_nested_operations(node.left)
             node.right, _ = self.simplify_nested_operations(node.right)
         return node, False
+
+    def format_constant(self, value):
+        """Format constant values consistently."""
+        if value == int(value):
+            return str(int(value))
+        return str(value)
