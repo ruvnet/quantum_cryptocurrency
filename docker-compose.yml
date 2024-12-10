@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  quantum_node_1:
+    build: .
+    container_name: quantum_node_1
+    environment:
+      - NODE_NAME=QuantumNode1
+      - P2P_PORT=8333
+      - WILLOW_QUBITS=105
+      - WILLOW_COHERENCE_TIME=100
+      - ERROR_CORRECTION_ENABLED=true
+    ports:
+      - "8333:8333"
+    volumes:
+      - quantum_data_1:/app/data
+    networks:
+      - quantum_network
+
+  quantum_node_2:
+    build: .
+    container_name: quantum_node_2
+    environment:
+      - NODE_NAME=QuantumNode2
+      - P2P_PORT=8334
+      - WILLOW_QUBITS=105
+      - WILLOW_COHERENCE_TIME=100
+      - ERROR_CORRECTION_ENABLED=true
+    ports:
+      - "8334:8333"
+    volumes:
+      - quantum_data_2:/app/data
+    networks:
+      - quantum_network
+
+  quantum_node_3:
+    build: .
+    container_name: quantum_node_3
+    environment:
+      - NODE_NAME=QuantumNode3
+      - P2P_PORT=8335
+      - WILLOW_QUBITS=105
+      - WILLOW_COHERENCE_TIME=100
+      - ERROR_CORRECTION_ENABLED=true
+    ports:
+      - "8335:8333"
+    volumes:
+      - quantum_data_3:/app/data
+    networks:
+      - quantum_network
+
+  monitoring:
+    image: grafana/grafana:latest
+    container_name: quantum_monitoring
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - quantum_network
+    depends_on:
+      - quantum_node_1
+      - quantum_node_2
+      - quantum_node_3
+
+volumes:
+  quantum_data_1:
+  quantum_data_2:
+  quantum_data_3:
+  grafana_data:
+
+networks:
+  quantum_network:
+    driver: bridge
