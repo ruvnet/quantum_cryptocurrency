@@ -167,6 +167,17 @@ docker-compose -f quantum_crypto/completion/deployment/docker/docker-compose.yml
 # 2) Start Docker Cluster
 ```
 
+### Docker Cluster Management
+When running in Docker mode (option 2), you'll have access to these management features:
+
+1. Start Cluster - Launch all containers
+2. Stop Cluster - Gracefully stop all services
+3. View Logs - Monitor container logs in real-time
+4. List Containers - See status of all running containers
+5. Restart Cluster - Restart all services
+6. Check Container Health - View detailed health status
+7. Return to Main Menu - Exit cluster management
+
 ### Monitoring
 ```bash
 # Docker logs
