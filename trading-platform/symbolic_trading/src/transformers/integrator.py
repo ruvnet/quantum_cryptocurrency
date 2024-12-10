@@ -40,33 +40,13 @@ class Integrator:
                     return OperatorNode('*', 
                         node.right, 
                         self.integrate(node.left))
+                elif isinstance(node.left, VariableNode) and node.left.name == self.variable:
+                    # Special case for x*f(x)
+                    # Use u-substitution with u = f(x)
+                    return self._integrate_variable_product(node)
                 else:
-                    # Integration by parts: ∫u dv = uv - ∫v du
-                    # Choose u as the non-constant factor
-                    if isinstance(node.left, ConstantNode):
-                        u = node.right
-                        dv = node.left
-                    else:
-                        u = node.left
-                        dv = node.right
-                    
-                    # Get v by integrating dv
-                    v = self.integrate(dv)
-                    
-                    # Get du by differentiating u
-                    from src.transformers.differentiator import Differentiator
-                    differentiator = Differentiator(self.variable)
-                    du = differentiator.differentiate(u)
-                    
-                    # Calculate uv
-                    uv = OperatorNode('*', u, v)
-                    
-                    # Calculate ∫v du recursively
-                    v_du = OperatorNode('*', v, du)
-                    v_du_integral = self.integrate(v_du)
-                    
-                    # Return uv - ∫v du
-                    return OperatorNode('-', uv, v_du_integral)
+                    # For other cases, try u-substitution
+                    return self._integrate_by_substitution(node)
             elif node.operator == '/':
                 if isinstance(node.right, ConstantNode):
                     # ∫ (f/c) dx = (1/c)*∫f dx
@@ -102,6 +82,47 @@ class Integrator:
                 raise ValueError(f"Unknown operator: {node.operator}")
         else:
             raise TypeError("Unsupported node type for integration")
+
+    def _integrate_variable_product(self, node):
+        """Handle integration of x*f(x) type expressions"""
+        if node.left.name == self.variable:
+            f = node.right
+        else:
+            f = node.left
+            
+        # For x*f(x), use u = f(x)
+        # Then du = f'(x)dx
+        from src.transformers.differentiator import Differentiator
+        differentiator = Differentiator(self.variable)
+        du = differentiator.differentiate(f)
+        
+        # Result is (1/2)*f(x)^2
+        return OperatorNode('/', 
+            OperatorNode('^', f, ConstantNode(2)),
+            ConstantNode(2))
+
+    def _integrate_by_substitution(self, node):
+        """Use u-substitution for integration"""
+        # Choose the more complex part as u
+        if isinstance(node.left, OperatorNode):
+            u = node.left
+            dv = node.right
+        else:
+            u = node.right
+            dv = node.left
+            
+        # Get du/dx
+        from src.transformers.differentiator import Differentiator
+        differentiator = Differentiator(self.variable)
+        du = differentiator.differentiate(u)
+        
+        # Get v by integrating dv
+        v = self.integrate(dv)
+        
+        # Result is u*v - ∫v*du
+        return OperatorNode('-',
+            OperatorNode('*', u, v),
+            self.integrate(OperatorNode('*', v, du)))
 
     def integrate_with_bounds(self, node, lower_bound, upper_bound):
         """
