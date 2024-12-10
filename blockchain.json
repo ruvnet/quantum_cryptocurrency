@@ -636,5 +636,25 @@
         "timestamp": 1733865396.0241113,
         "previous_hash": "QPROOF_8418776203895586980",
         "block_height": 42
+    },
+    {
+        "transactions": [
+            {
+                "sender": "alice_pubkey",
+                "receiver": "bob_pubkey",
+                "amount": 10,
+                "signature": "alice_signature"
+            },
+            {
+                "sender": "carol_pubkey",
+                "receiver": "dave_pubkey",
+                "amount": 20,
+                "signature": "carol_signature"
+            }
+        ],
+        "quantum_proof": "QPROOF_826538117190499177",
+        "timestamp": 1733865419.77857,
+        "previous_hash": "QPROOF_4574370761891049585",
+        "block_height": 43
     }
 ]
