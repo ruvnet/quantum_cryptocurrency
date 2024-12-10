@@ -120,6 +120,11 @@ run_system_tests() {
 
 run_all_tests() {
     run_test_suite "all" "quantum_crypto/completion/testing/"
+    run_symbolic_tests
+}
+
+run_symbolic_tests() {
+    run_test_suite "symbolic" "trading-platform/symbolic_trading/tests/symbolic/"
 }
 
 # Main menu
@@ -138,9 +143,10 @@ while true; do
     echo "1) Run Unit Tests"
     echo "2) Run Integration Tests"
     echo "3) Run System Tests"
-    echo "4) Run All Tests"
-    echo "5) Show Help"
-    echo "6) Exit"
+    echo "4) Run Symbolic Math Tests"
+    echo "5) Run All Tests" 
+    echo "6) Show Help"
+    echo "7) Exit"
     
     read -p "Enter your choice (1-6): " choice
     
@@ -155,17 +161,20 @@ while true; do
             run_system_tests
             ;;
         4)
-            run_all_tests
+            run_symbolic_tests
             ;;
         5)
-            print_help
+            run_all_tests
             ;;
         6)
+            print_help
+            ;;
+        7)
             echo -e "\n${BLUE}Exiting test runner...${NC}"
             exit 0
             ;;
         *)
-            echo -e "\n${RED}Invalid choice. Please select 1-6.${NC}\n"
+            echo -e "\n${RED}Invalid choice. Please select 1-7.${NC}\n"
             sleep 1
             clear
             ;;
