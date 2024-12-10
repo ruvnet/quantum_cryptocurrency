@@ -13,12 +13,14 @@ class Simplifier:
         ]
 
     def simplify(self, node):
-        # First check if this is a trigonometric expression
+        # First check if this is a trigonometric or exponential expression
         if isinstance(node, OperatorNode):
             if node.operator in ['sin', 'cos', 'tan']:
                 raise NotImplementedError("Trigonometric pattern matching not implemented")
+            elif node.operator == 'exp' or (node.operator == '^' and str(node.left) == 'e'):
+                raise NotImplementedError("Exponential pattern matching not implemented")
             
-            # Recursively check children for trig functions first
+            # Recursively check children for trig/exp functions first
             if node.left:
                 self.simplify(node.left)
             if node.right:
