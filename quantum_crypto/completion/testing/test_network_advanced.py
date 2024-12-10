@@ -1,4 +1,5 @@
 import pytest
+import socket
 from src.classical_integration.network import Network
 from src.classical_integration.node import Node
 
