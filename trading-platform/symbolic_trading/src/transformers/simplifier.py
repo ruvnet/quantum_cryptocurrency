@@ -13,11 +13,18 @@ class Simplifier:
         ]
 
     def simplify(self, node):
+        # First check if this is a trigonometric expression
         if isinstance(node, OperatorNode):
-            # Check for trig functions first
             if node.operator in ['sin', 'cos', 'tan']:
                 raise NotImplementedError("Trigonometric pattern matching not implemented")
-            elif node.operator in ['log', 'exp']:
+            
+            # Recursively check children for trig functions first
+            if node.left:
+                self.simplify(node.left)
+            if node.right:
+                self.simplify(node.right)
+            
+            if node.operator in ['log', 'exp']:
                 raise NotImplementedError("Transcendental function simplification not implemented")
                 
         changed = True
