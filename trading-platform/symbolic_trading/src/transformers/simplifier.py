@@ -20,6 +20,12 @@ class Simplifier:
             elif node.operator == 'exp' or (node.operator == '^' and str(node.left) == 'e'):
                 raise NotImplementedError("Exponential pattern matching not implemented")
             
+            # Handle commutativity for + and *
+            if node.operator in ['+', '*'] and isinstance(node.left, VariableNode) and isinstance(node.right, VariableNode):
+                # Sort variables alphabetically for consistent ordering
+                if node.right.name < node.left.name:
+                    node = OperatorNode(node.operator, node.right, node.left)
+            
             # Recursively check children for trig/exp functions first
             if node.left:
                 self.simplify(node.left)
@@ -101,6 +107,6 @@ class Simplifier:
         """Format constant values consistently."""
         if isinstance(value, (int, float)):
             if value.is_integer():
-                return str(int(value))
-            return str(float(value)).rstrip('0').rstrip('.')
+                return str(int(value))  # Return integer format for whole numbers
+            return str(float(value))
         return str(value)

@@ -153,9 +153,10 @@ class OperatorNode(ExpressionNode):
         if self.operator in ['+', '-']:
             return f"{self.left} {self.operator} {self.right}"
         elif self.operator in ['*', '/']:
-            left_str = f"({self.left})" if isinstance(self.left, OperatorNode) and self.left.operator in ['+', '-'] else str(self.left)
-            right_str = f"({self.right})" if isinstance(self.right, OperatorNode) and self.right.operator in ['+', '-'] else str(self.right)
-            return f"{left_str} {self.operator} {right_str}"
+            left_str = f"({self.left})" if isinstance(self.left, OperatorNode) else str(self.left)
+            right_str = f"({self.right})" if isinstance(self.right, OperatorNode) else str(self.right)
+            # Add parentheses around the entire expression if it's part of a larger expression
+            return f"({left_str} {self.operator} {right_str})"
         else:  # ^ operator
             left_str = f"({self.left})" if isinstance(self.left, OperatorNode) else str(self.left)
             right_str = str(self.right)
