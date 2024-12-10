@@ -3,6 +3,43 @@
 
 A next-generation cryptocurrency platform that leverages quantum computing capabilities to provide enhanced security and scalability. This project integrates Google's Willow quantum chip features with classical blockchain technology to create a hybrid quantum-classical cryptocurrency system.
 
+```
+🚀 Starting Quantum Cryptocurrency Node...
+Node listening on 0.0.0.0:8333
+
+📝 Creating sample transactions...
+➕ Transaction added to pending pool. Total pending: 1
+➕ Transaction added to pending pool. Total pending: 2
+
+🔨 Creating new block...
+📦 Creating new block with 2 transactions
+⚙️ Generating quantum proof...
+🔍 Validating block...
+Block #40 added to chain
+
+✅ New block created successfully!
+
+📦 Block Details:
+├── Height: #40
+├── Timestamp: Tue Dec 10 16:05:55 2024
+├── Previous Hash: QPROOF_7023475619602908150
+├── Quantum Proof: QPROOF_9002009686329635771
+└── Transactions: 2 total
+
+💰 Transaction Details:
+Transaction #1:
+├── From: alice_pubkey
+├── To: bob_pubkey
+└── Amount: 10 QC
+Transaction #2:
+├── From: carol_pubkey
+├── To: dave_pubkey
+└── Amount: 20 QC
+
+🔄 Node is running and ready for connections...
+
+```
+
 ## 🌟 Key Features
 
 ### Quantum Security
