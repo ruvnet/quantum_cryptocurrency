@@ -5,7 +5,7 @@ services:
       dockerfile: completion/deployment/docker/Dockerfile
     container_name: quantum_currency_app
     env_file:
-      - config/.env
+      - ../../../config/.env
     ports:
       - "8333:8333"
     volumes:
