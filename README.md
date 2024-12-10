@@ -2,7 +2,7 @@
 
 A next-generation cryptocurrency platform that leverages quantum computing capabilities to provide enhanced security and scalability. This project integrates Google's Willow quantum chip features with classical blockchain technology to create a hybrid quantum-classical cryptocurrency system.
 
-## Features
+## 🌟 Key Features
 
 ### Quantum Security
 - Quantum-resistant cryptographic keys using lattice-based cryptography
