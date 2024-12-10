@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, relationship
 
 class Base(DeclarativeBase):
+    """Base class for all mapped classes"""
     pass
 
 class Asset(Base):
