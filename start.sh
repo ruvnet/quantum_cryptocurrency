@@ -16,8 +16,8 @@ print_header() {
 # Function to start local node
 start_local() {
     echo -e "${BLUE}Starting local node...${NC}"
-    cd quantum_crypto
-    PYTHONPATH=$PYTHONPATH:$(pwd) python3 src/main.py
+    cd /workspaces/quantum_cryptocurrency
+    PYTHONPATH=$PYTHONPATH:/workspaces/quantum_cryptocurrency python quantum_crypto/src/main.py
 }
 
 # Function to start Docker cluster
