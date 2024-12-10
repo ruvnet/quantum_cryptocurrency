@@ -75,6 +75,8 @@ class Simplifier:
         if isinstance(node, OperatorNode) and node.operator == '^':
             if isinstance(node.right, ConstantNode) and node.right.value == 0:
                 return ConstantNode(1), True
+            if isinstance(node.left, ConstantNode) and node.left.value == 0:
+                return ConstantNode(0), True
         return node, False
 
     def simplify_power_one(self, node):

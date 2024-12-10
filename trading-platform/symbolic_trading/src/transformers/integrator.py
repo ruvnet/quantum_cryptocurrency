@@ -70,12 +70,12 @@ class Integrator:
             elif node.operator == '/':
                 if isinstance(node.right, ConstantNode):
                     # ∫ (f/c) dx = (1/c)*∫f dx
-                    return OperatorNode('/', 
-                        self.integrate(node.left), 
-                        node.right)
+                    return OperatorNode('*',
+                        OperatorNode('/', ConstantNode(1), node.right),
+                        self.integrate(node.left))
                 else:
-                    # Complex rational function integration
-                    raise NotImplementedError("Integration of rational functions not implemented")
+                    # Try integration by parts for rational functions
+                    return self._integrate_by_parts(node)
             elif node.operator == '^':
                 if isinstance(node.left, VariableNode) and node.left.name == self.variable:
                     # Handle x^n where n is any expression
