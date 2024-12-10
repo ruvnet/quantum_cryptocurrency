@@ -8,7 +8,7 @@
 set -e
 
 # Define the base project directory
-PROJECT_DIR="project"
+PROJECT_DIR="quantum_crypto"
 
 # Create the main project directory
 mkdir -p "$PROJECT_DIR"

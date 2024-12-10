@@ -1,0 +1,16 @@
+{
+  "name": "quantum-currency-project",
+  "version": "1.0.0",
+  "description": "A hypothetical quantum-secured cryptocurrency leveraging Google's Willow quantum chip.",
+  "main": "src/main.py",
+  "scripts": {
+    "start": "python src/main.py",
+    "test": "python -m unittest discover completion/testing"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "flask": "^2.0.1",
+    "qiskit": "^0.35.0"
+  }
+}

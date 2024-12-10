@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  quantum_currency:
+    build: .
+    container_name: quantum_currency_app
+    env_file:
+      - ../../config/.env
+    ports:
+      - "${P2P_PORT}:8333"
+    volumes:
+      - ../../src:/app/src
+      - ../../config:/app/config
+    restart: unless-stopped
