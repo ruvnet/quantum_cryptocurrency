@@ -121,16 +121,32 @@ python -m pytest quantum_crypto/completion/testing/
 - DevOps: Docker, GitHub Actions
 
 ### Project Structure
+```mermaid
+graph TD
+    A[quantum_crypto] --> B[src]
+    A --> C[config]
+    A --> D[completion]
+    A --> E[tests]
+    A --> F[deployment]
+
+    B --> I[quantum_currency]
+    B --> J[classical_integration]
+
+    I --> K[quantum_hash.py]
+    I --> L[quantum_keygen.py]
+    I --> M[quantum_block.py]
+    I --> N[quantum_resource_manager.py]
+
+    J --> O[network.py]
+    J --> P[node.py]
+    J --> Q[storage.py]
+    J --> R[transactions.py]
 ```
-quantum_crypto/
-├── src/
-│   ├── quantum_currency/     # Quantum implementations
-│   └── classical_integration/# Classical blockchain integration
-├── config/                   # Configuration
-├── completion/               # Deployment & docs
-├── tests/                    # Test suites
-└── deployment/               # Deployment configurations
-```
+
+Key components:
+- Quantum currency core logic
+- Classical blockchain integration
+- Modular design with specific modules for different functionalities
 
 ### Architecture Overview
 ```
