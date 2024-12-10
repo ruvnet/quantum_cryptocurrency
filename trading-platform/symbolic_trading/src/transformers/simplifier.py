@@ -54,9 +54,16 @@ class Simplifier:
 
     def simplify_multiply_zero(self, node):
         if isinstance(node, OperatorNode) and node.operator == '*':
-            if (isinstance(node.left, ConstantNode) and node.left.value == 0) or \
-               (isinstance(node.right, ConstantNode) and node.right.value == 0):
-                return ConstantNode(0 if isinstance(node.left.value, int) or isinstance(node.right.value, int) else 0.0), True
+            # First check if either operand is a ConstantNode with value 0
+            left_is_zero = isinstance(node.left, ConstantNode) and node.left.value == 0
+            right_is_zero = isinstance(node.right, ConstantNode) and node.right.value == 0
+            
+            if left_is_zero or right_is_zero:
+                # If either operand is zero, determine if it's an integer zero
+                if left_is_zero:
+                    return ConstantNode(0 if isinstance(node.left.value, int) else 0.0), True
+                else:  # right_is_zero
+                    return ConstantNode(0 if isinstance(node.right.value, int) else 0.0), True
         return node, False
 
     def simplify_multiply_one(self, node):
