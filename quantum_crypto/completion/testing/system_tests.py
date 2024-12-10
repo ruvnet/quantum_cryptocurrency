@@ -1,5 +1,6 @@
 import pytest
 from src.classical_integration.node import Node
+from src.classical_integration.network import Network
 from src.classical_integration.transactions import create_transaction
 from src.quantum_currency.quantum_block import create_quantum_block
 from src.quantum_currency.quantum_consensus import validate_block
