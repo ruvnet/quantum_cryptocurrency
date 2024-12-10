@@ -1,6 +1,7 @@
 import pytest
 from src.quantum_currency.quantum_consensus import validate_block, verify_quantum_proof
 from src.classical_integration.node import Node
+from src.classical_integration.transactions import create_transaction
 
 def test_block_validation():
     """Test complete block validation process"""

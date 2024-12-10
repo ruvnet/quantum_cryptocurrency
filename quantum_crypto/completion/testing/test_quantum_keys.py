@@ -1,5 +1,9 @@
 import pytest
-from src.quantum_currency.quantum_keygen import generate_quantum_keys, verify_signature
+from src.quantum_currency.quantum_keygen import (
+    generate_quantum_keys,
+    verify_signature,
+    create_signature
+)
 
 def test_key_generation():
     """Test quantum-resistant key pair generation"""
@@ -12,7 +16,7 @@ def test_signature_verification():
     """Test signature creation and verification"""
     private_key, public_key = generate_quantum_keys()
     message = "test_transaction"
-    signature = sign_message(message, private_key)
+    signature = create_signature(message, private_key)
     assert verify_signature(message, signature, public_key), "Valid signature should verify"
 
 def test_invalid_signature():
@@ -20,5 +24,5 @@ def test_invalid_signature():
     private_key, public_key = generate_quantum_keys()
     message = "test_transaction"
     wrong_message = "wrong_transaction"
-    signature = sign_message(message, private_key)
+    signature = create_signature(message, private_key)
     assert not verify_signature(wrong_message, signature, public_key), "Invalid signature should not verify"

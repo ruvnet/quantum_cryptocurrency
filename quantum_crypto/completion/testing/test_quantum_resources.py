@@ -11,7 +11,8 @@ def test_error_correction():
     """Test error correction capabilities"""
     qrm = QuantumResourceManager(qubits=5, coherence_time=100, error_correction=True)
     state = qrm.initialize_quantum_state("test_data")
-    noisy_state = introduce_noise(state)  # Simulate noise
+    # Simulate noise by flipping some qubits
+    noisy_state = qrm.simulate_noise(state)
     corrected_state = qrm.apply_error_correction(noisy_state)
     assert corrected_state != noisy_state, "Error correction should modify noisy state"
 
