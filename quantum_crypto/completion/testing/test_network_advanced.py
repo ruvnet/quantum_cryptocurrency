@@ -17,9 +17,12 @@ def test_broadcast_mechanism():
 def test_network_resilience():
     """Test network behavior with failing peers"""
     network = Network(Node())
-    # Add multiple peers and simulate some failing
-    network.connect_to_peer('localhost', 8334)
-    network.connect_to_peer('localhost', 8335)
+    # Create a peer that will fail
+    peer = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    network.peers.append(peer)
+    # Test broadcast with failing peer
+    network.broadcast(b"test_data")
+    assert len(network.peers) == 0  # Peer should be removed after failure
     # Simulate peer failure
     network.peers[0].close()
     network.broadcast(b"test_data")
